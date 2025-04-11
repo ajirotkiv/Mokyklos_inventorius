@@ -1,10 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <title>Mokyklos inventoriaus aprašas</title>
 </head>
 <body>
-$END$
+<h1>Mokyklos inventorius</h1>
+<form method="get">
+  <input type="text" name="q" placeholder="Ieškoti..." value="{{ request.GET.q }}">
+  <button type="submit">Ieškoti</button>
+</form>
+
+<!--{% for inventoris in inventoriai %}-->
+<!--    <div style="border:1px solid #ccc; margin:10px; padding:10px;">-->
+<!--        <strong>{{ inventoris.pavadinimas }}</strong><br>-->
+<!--        Serijinis Nr: {{ inventoris.serijinis_numeris }}<br>-->
+<!--        Inventoriaus Nr: {{ inventoris.inventorinis_numeris }}<br>-->
+<!--        Kaina: {{ inventoris.kaina }} €<br>-->
+<!--        Būsena: {{ inventoris.busena }}<br>-->
+<!--        Vieta: {{ inventoris.vieta }}<br>-->
+<!--        Įvesta į eksloataciją: {{ inventoris.ivedimo_data }}-->
+<!--    </div>-->
+<!--{% endfor %}-->
+{% if no_results_message %}
+    <p style="color: red;">{{ no_results_message }}</p>
+{% endif %}
+
+{% if inventoriai %}
+    {% for inventorius in inventoriai %}
+        <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
+            <h3>{{ inventorius.pavadinimas }}</h3>
+            <p><strong>Inventorinis Nr:</strong> {{ inventorius.inventorinis_numeris }}</p>
+            <p><strong>Kaina:</strong> {{ inventorius.kaina }} €</p>
+            <p><strong>Būsena:</strong> {{ inventorius.busena }}</p>
+            <p><strong>Vieta:</strong> {{ inventorius.vieta.pavadinimas }}</p>
+            <p><strong>Kategorija:</strong> {{ inventorius.kategorija.pavadinimas }}</p>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Įrašų nerasta.</p>
+{% endif %}
+
 </body>
 </html>
