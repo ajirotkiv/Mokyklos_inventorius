@@ -1,10 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Inventoriaus forma</title>
 </head>
 <body>
-$END$
+<form method="post">
+    {% csrf_token %}
+    <div style="max-width: 400px; margin: auto; padding: 10px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+        <h2 style="text-align: center;">Inventoriaus forma</h2>
+        {% for field in form %}
+            <div style="margin-bottom: 15px;">
+                <label>{{ field.label }}</label>
+                {{ field }}
+            </div>
+        {% endfor %}
+<br>
+        <button type="submit" style="padding: 10px 20px; background-color: #007bff; border: none; color: white; border-radius: 4px;">Išsaugoti</button>
+        <a href="{% url 'pradinis' %}" style="margin-left: 10px; color: #555;">Atšaukti</a>
+    </div>
+</form>
 </body>
 </html>

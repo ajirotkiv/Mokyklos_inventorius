@@ -1,10 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <title>Statistika</title>
 </head>
 <body>
-$END$
+<h2>Inventoriaus statistika</h2>
+
+<table border="1" cellspacing="0" cellpadding="8" style="border-collapse: collapse; width: 100%;">
+    <thead style="background-color: #f0f0f0;">
+        <tr>
+            <th>Bendras inventoriaus kiekis</th>
+            <th>Pagal turto tipą</th>
+            <th>Pagal būseną</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="text-align: center;">{{ bendras_kiekis }}</td>
+            <td>
+                <ul style="margin: 0; padding-left: 20px;">
+                    {% for tipas in pagal_turto_tipa %}
+                        <li>
+                            {% if tipas.turto_tipas == 'ILG' %}
+                                Ilgalaikis turtas – {{ tipas.kiekis }}
+                            {% elif tipas.turto_tipas == 'TRU' %}
+                                Trumpalaikis turtas – {{ tipas.kiekis }}
+                            {% else %}
+                                Nežinomas tipas – {{ tipas.kiekis }}
+                            {% endif %}
+                        </li>
+                    {% empty %}
+                        <li>Nėra duomenų</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>
+                <ul style="margin: 0; padding-left: 20px;">
+                    {% for item in kiekvienos_busenos_kiekiai %}
+                        <li>{{ item.busena }} – {{ item.kiekis }}</li>
+                    {% empty %}
+                        <li>Nėra duomenų</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+<a href="{% url 'pradinis' %}">Grįžti į pagrindinį</a>
+
 </body>
 </html>

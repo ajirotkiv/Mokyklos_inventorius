@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-$END$
+<h2>Ar tikrai norite ištrinti?</h2>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Taip</button>
+</form>
+<br>
+    <a href="{% url 'pradinis' %}" style="margin-left: 10px;">Atšaukti</a>
+</br>
+
 </body>
 </html>

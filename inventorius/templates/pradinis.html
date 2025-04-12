@@ -4,41 +4,82 @@
     <title>Mokyklos inventoriaus aprašas</title>
 </head>
 <body>
-<h1>Mokyklos inventorius</h1>
+<h1>MOKYKLOS INVENTORIAUS SĄRAŠAS</h1>
+<div style="margin-bottom: 20px;">
+    <a href="{% url 'kurti' %}" style="font-size: 16px;">Pridėti naują inventorių</a>
+    <a href="{% url 'statistika' %}" style="font-size: 16px;">Statistika</a>
+</div>
+
 <form method="get">
   <input type="text" name="q" placeholder="Ieškoti..." value="{{ request.GET.q }}">
   <button type="submit">Ieškoti</button>
 </form>
-
-<!--{% for inventoris in inventoriai %}-->
-<!--    <div style="border:1px solid #ccc; margin:10px; padding:10px;">-->
-<!--        <strong>{{ inventoris.pavadinimas }}</strong><br>-->
-<!--        Serijinis Nr: {{ inventoris.serijinis_numeris }}<br>-->
-<!--        Inventoriaus Nr: {{ inventoris.inventorinis_numeris }}<br>-->
-<!--        Kaina: {{ inventoris.kaina }} €<br>-->
-<!--        Būsena: {{ inventoris.busena }}<br>-->
-<!--        Vieta: {{ inventoris.vieta }}<br>-->
-<!--        Įvesta į eksloataciją: {{ inventoris.ivedimo_data }}-->
-<!--    </div>-->
-<!--{% endfor %}-->
+<br>
 {% if no_results_message %}
     <p style="color: red;">{{ no_results_message }}</p>
 {% endif %}
 
 {% if inventoriai %}
-    {% for inventorius in inventoriai %}
-        <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
-            <h3>{{ inventorius.pavadinimas }}</h3>
-            <p><strong>Inventorinis Nr:</strong> {{ inventorius.inventorinis_numeris }}</p>
-            <p><strong>Kaina:</strong> {{ inventorius.kaina }} €</p>
-            <p><strong>Būsena:</strong> {{ inventorius.busena }}</p>
-            <p><strong>Vieta:</strong> {{ inventorius.vieta.pavadinimas }}</p>
-            <p><strong>Kategorija:</strong> {{ inventorius.kategorija.pavadinimas }}</p>
-        </div>
-    {% endfor %}
+
+<form method="post" action="{% url 'pasirinktas_veiksmas' %}">
+    {% csrf_token %}
+    <table border="1" cellspacing="0" cellpadding="8" style="border-collapse: collapse; width: 100%;">
+        <thead style="background-color: #f0f0f0;">
+            <tr>
+                <th>Pasirinkti</th>
+                <th>Pavadinimas</th>
+                <th>Inventorinis Nr</th>
+                <th>Serijinis Nr</th>
+                <th>Kaina</th>
+                <th>Būsena</th>
+                <th>Kategorija</th>
+                <th>Naudojimo vieta</th>
+                <th>Įvedimo data</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inventorius in inventoriai %}
+            <tr>
+                <td><input type="radio" name="pasirinktas_id" value="{{ inventorius.id }}"></td>
+                <td>{{ inventorius.pavadinimas }}</td>
+                <td>{{ inventorius.inventorinis_numeris }}</td>
+                <td>{{ inventorius.serijinis_numeris }}</td>
+                <td>{{ inventorius.kaina }} €</td>
+                <td>{{ inventorius.busena }}</td>
+                <td>{{ inventorius.kategorija.pavadinimas }}</td>
+                <td>{{ inventorius.vieta.pavadinimas }}</td>
+                <td>{{ inventorius.ivedimo_data }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+
+    <button type="submit" name="veiksmas" value="redaguoti">Redaguoti</button>
+    <button type="submit" name="veiksmas" value="istrinti">Ištrinti</button>
+</form>
 {% else %}
     <p>Įrašų nerasta.</p>
 {% endif %}
+
+
+<!--{% if inventoriai %}-->
+<!--    {% for inventorius in inventoriai %}-->
+<!--        <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">-->
+<!--            <h3>{{ inventorius.pavadinimas }}</h3>-->
+<!--            <p><strong>Serijinis Nr.:</strong> {{ inventorius.serijinis_numeris }}-->
+<!--            <p><strong>Inventorinis Nr:</strong> {{ inventorius.inventorinis_numeris }}</p>-->
+<!--            <p><strong>Kaina:</strong> {{ inventorius.kaina }} €</p>-->
+<!--            <p><strong>Būsena:</strong> {{ inventorius.busena }}</p>-->
+<!--            <p><strong>Naudojimo vieta:</strong> {{ inventorius.vieta.pavadinimas }}</p>-->
+<!--        </div>-->
+<!--<a href="{% url 'redaguoti' inventorius.pk %}">Redaguoti</a> |-->
+<!--<a href="{% url 'istrinti' inventorius.pk %}">Ištrinti</a>-->
+<!--    {% endfor %}-->
+<!--{% else %}-->
+<!--    <p>Įrašų nerasta.</p>-->
+<!--{% endif %}-->
 
 </body>
 </html>
